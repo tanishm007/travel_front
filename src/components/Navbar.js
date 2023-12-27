@@ -2,13 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
+import { useNavigate } from 'react-router-dom';
+import { Nav, NavDropdown } from 'react-bootstrap'
+
+
 
 function Navbar() {
+  const navigate = useNavigate();
   const [click, setClick] = useState(false);
   const [button, setButton] = useState(true);
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
+  const logout = () => {
+    // Remove login details from local storage
+    localStorage.clear();
+// Redirect to /login page
+navigate('/login');
+    
+console.log('hello world');
+};
 
   const showButton = () => {
     if (window.innerWidth <= 960) {
@@ -24,8 +37,12 @@ function Navbar() {
 
   window.addEventListener('resize', showButton);
 
+  const handleSelect = (eventKey) => alert(`selected ${eventKey}`);
+
   return (
+    
     <>
+
       <nav className='navbar'>
         <div className='navbar-container'>
           <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
@@ -43,34 +60,21 @@ function Navbar() {
             </li>
             <li className='nav-item'>
               <Link
-                to='/services'
+                to='/contactUs'
                 className='nav-links'
                 onClick={closeMobileMenu}
               >
-                Services
+                Contact Form
               </Link>
             </li>
-            <li className='nav-item'>
-              <Link
-                to='/products'
-                className='nav-links'
-                onClick={closeMobileMenu}
-              >
-                Products
-              </Link>
-            </li>
+            
 
-            <li>
-              <Link
-                to='/sign-up'
-                className='nav-links-mobile'
-                onClick={closeMobileMenu}
-              >
-                Sign Up
-              </Link>
-            </li>
+         
+            <NavDropdown title="User" id="basic-nav-dropdown">
+              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+            </NavDropdown>
           </ul>
-          {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>}
+       
         </div>
       </nav>
     </>
